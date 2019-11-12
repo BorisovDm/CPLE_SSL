@@ -27,5 +27,4 @@ def softmax(X):
     tmp = X - X.max(axis=1)[:, np.newaxis]
     X = np.exp(tmp)
     X /= X.sum(axis=1)[:, np.newaxis]
-
     return X

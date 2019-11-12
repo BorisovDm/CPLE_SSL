@@ -14,7 +14,6 @@ class LinearDiscriminantAnalysis:
         self._covariance = class_cov(X, y, self._priors)
         self._coef = linalg.lstsq(self._covariance, self._means.T)[0]
         self._intercept = -0.5 * np.diag(np.dot(self._means, self._coef)) + np.log(self._priors)
-
         return self
 
     def predict_proba(self, X):

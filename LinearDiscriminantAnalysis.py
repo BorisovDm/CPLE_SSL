@@ -8,6 +8,7 @@ class LinearDiscriminantAnalysis:
         pass
 
     def fit(self, X, y):
+        X = X.astype(float)
         self.classes, y_t = np.unique(y, return_inverse=True)
         self._priors = np.bincount(y_t) / len(y)
         self._means = class_means(X, y)
@@ -17,9 +18,11 @@ class LinearDiscriminantAnalysis:
         return self
 
     def predict_proba(self, X):
+        X = X.astype(float)
         scores = np.dot(X, self._coef) + self._intercept
         return softmax(scores)
 
     def predict(self, X):
+        X = X.astype(float)
         scores = np.dot(X, self._coef) + self._intercept
         return self.classes[np.argmax(scores, axis=1)]

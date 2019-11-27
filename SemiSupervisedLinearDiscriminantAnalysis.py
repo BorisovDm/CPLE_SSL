@@ -52,7 +52,7 @@ class SemiSupervisedLinearDiscriminantAnalysis:
 
         prev_obj_function_value = None
 
-        for i in range(self.max_iter):
+        for step in range(self.max_iter):
             semi_priors = (class_cnt + soft_labels.sum(axis=0)) / (N + M)  # [1, K]
 
             unlabeled_weighted_class_sum = np.asarray([
@@ -87,12 +87,12 @@ class SemiSupervisedLinearDiscriminantAnalysis:
 
             obj_function_value = np.sum(soft_labels * gradient)
             if prev_obj_function_value is not None and np.abs(prev_obj_function_value - obj_function_value) < self.tol:
-                print("step - ", i)
                 break
 
             prev_obj_function_value = obj_function_value
             self.lr /= 1.5
 
+        self.n_steps = step
         self._coef = linalg.lstsq(semi_cov, semi_means.T)[0]
         self._intercept = -0.5 * np.diag(np.dot(semi_means, self._coef)) + np.log(semi_priors)
         return self

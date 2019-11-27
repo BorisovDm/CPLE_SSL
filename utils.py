@@ -28,3 +28,16 @@ def softmax(X):
     X = np.exp(tmp)
     X /= X.sum(axis=1)[:, np.newaxis]
     return X
+
+
+def projection_prob_simplex(v):
+    """
+        Projection onto the probability simplex
+        https://eng.ucmerced.edu/people/wwang5/papers/SimplexProj.pdf
+    """
+    # print(v)
+    u = sorted(v)[::-1]
+    h = u + (1 - np.cumsum(u)) / (np.arange(len(u)) + 1)
+    rho = np.where(h > 0)[0].max() + 1
+    lambd = (1 - np.sum(u[:rho])) / rho
+    return np.clip(v + lambd, 0, 1)
